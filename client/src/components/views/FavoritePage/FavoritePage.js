@@ -58,7 +58,7 @@ function FavoritePage() {
               height: '240px',
               overflowX: 'auto',
             }}
-            src={`http://localhost:5000/${favorite.productImage[0]}`}
+            src={`https://gallery-x.herokuapp.com/${favorite.productImage[0]}`}
           />
         ) : (
           'no image'
