@@ -68,7 +68,7 @@ function UploadProductPage(props) {
     };
     Axios.post('/api/product/uploadProduct', variables).then((response) => {
       if (response.data.success) {
-        console.log(response.data);
+        // console.log(response.data);
         message.success('Photos uploaded!');
         props.history.push('/');
       } else {

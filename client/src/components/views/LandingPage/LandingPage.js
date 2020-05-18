@@ -111,7 +111,7 @@ function LandingPage() {
     //   newFilters[category] = priceValues;
     // }
 
-    console.log(newFilters);
+    // console.log(newFilters);
 
     showFilteredResults(newFilters);
     setFilters(newFilters);

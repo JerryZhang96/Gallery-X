@@ -17,7 +17,7 @@ function Favorite(props) {
     if (!Favorited) {
       Axios.post('/api/favorite/addToFavorite', variables).then((response) => {
         if (response.data.success) {
-          console.log(response.data);
+          // console.log(response.data);
           setFavorited(true);
           setFavoriteNumber(FavoriteNumber + 1);
           message.success('Added To Favorite!');
@@ -29,7 +29,7 @@ function Favorite(props) {
       Axios.post('/api/favorite/removeFromFavorite', variables).then(
         (response) => {
           if (response.data.success) {
-            console.log(response.data);
+            // console.log(response.data);
             setFavorited(false);
             setFavoriteNumber(FavoriteNumber - 1);
             message.success('Removed From Favorite!');

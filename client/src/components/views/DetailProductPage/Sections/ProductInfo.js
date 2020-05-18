@@ -9,7 +9,7 @@ function ProductInfo(props) {
     setProduct(props.detail);
   }, [props.detail]);
 
-  console.log(props.detail);
+  // console.log(props.detail);
 
   // const addToCartHandler = () => {
   //   props.addToCart(props.detail._id);
