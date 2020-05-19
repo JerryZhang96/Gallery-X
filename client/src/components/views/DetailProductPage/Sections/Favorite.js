@@ -22,7 +22,7 @@ function Favorite(props) {
           setFavoriteNumber(FavoriteNumber + 1);
           message.success('Added To Favorite!');
         } else {
-          alert('Failed to add to favorite');
+          message.error('Failed to add to favorite');
         }
       });
     } else {
@@ -34,7 +34,7 @@ function Favorite(props) {
             setFavoriteNumber(FavoriteNumber - 1);
             message.success('Removed From Favorite!');
           } else {
-            alert('Failed to remove from favorite ');
+            message.error('Failed to remove from favorite ');
           }
         }
       );
@@ -46,7 +46,7 @@ function Favorite(props) {
       if (response.data.success) {
         setFavoriteNumber(response.data.favoriteNumber);
       } else {
-        alert('Failed to get favorite Number');
+        message.error('Failed to get favorite Number');
       }
     });
 
@@ -54,7 +54,7 @@ function Favorite(props) {
       if (response.data.success) {
         setFavorited(response.data.favorited);
       } else {
-        alert('Failed to get favorite info');
+        message.error('Failed to get favorite info');
       }
     });
   }, []);

@@ -23,7 +23,7 @@ function FavoritePage() {
         setFavorites(response.data.favorites);
         setLoading(false);
       } else {
-        alert('Failed to get subscription videos');
+        alert('Failed to get favorite gallery');
       }
     });
   };

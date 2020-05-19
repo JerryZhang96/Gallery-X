@@ -8,7 +8,7 @@ function ImageSlider(props) {
         {props.images.map((image, index) => (
           <div key={index}>
             <img
-              style={{ width: '100%', maxHeight: '110px' }}
+              style={{ width: '100%', height: '350px' }}
               src={`https://gallery-x.herokuapp.com/${image}`}
               alt='productImage'
             />

@@ -34,7 +34,7 @@ router.post('/favorited', auth, (req, res) => {
   });
 });
 
-router.post('/addToFavorite', (req, res) => {
+router.post('/addToFavorite', auth, (req, res) => {
   console.log(req.body);
 
   const favorite = new Favorite(req.body);
@@ -45,7 +45,7 @@ router.post('/addToFavorite', (req, res) => {
   });
 });
 
-router.post('/removeFromFavorite', (req, res) => {
+router.post('/removeFromFavorite', auth, (req, res) => {
   Favorite.findOneAndDelete({
     productId: req.body.productId,
     userFrom: req.body.userFrom,
@@ -55,7 +55,7 @@ router.post('/removeFromFavorite', (req, res) => {
   });
 });
 
-router.post('/getFavoredProduct', (req, res) => {
+router.post('/getFavoredProduct', auth, (req, res) => {
   //Need to find all of the Users that I am subscribing to From Subscriber Collection
   Favorite.find({ userFrom: req.body.userFrom }).exec((err, favorites) => {
     if (err) return res.status(400).send(err);
