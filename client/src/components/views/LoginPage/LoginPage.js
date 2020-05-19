@@ -19,15 +19,15 @@ function LoginPage(props) {
     setRememberMe(!rememberMe);
   };
 
-  const initialEmail = localStorage.getItem('rememberMe')
-    ? localStorage.getItem('rememberMe')
+  const initialState = JSON.parse(window.localStorage.getItem('rememberMe'))
+    ? JSON.parse(window.localStorage.getItem('rememberMe'))
     : '';
 
   return (
     <Formik
       initialValues={{
-        email: initialEmail,
-        password: '',
+        email: initialState.email,
+        password: initialState.password,
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
@@ -49,7 +49,10 @@ function LoginPage(props) {
               if (response.payload.loginSuccess) {
                 window.localStorage.setItem('userId', response.payload.userId);
                 if (rememberMe === true) {
-                  window.localStorage.setItem('rememberMe', values.id);
+                  window.localStorage.setItem(
+                    'rememberMe',
+                    JSON.stringify(values)
+                  );
                 } else {
                   localStorage.removeItem('rememberMe');
                 }
