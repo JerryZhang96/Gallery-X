@@ -57,7 +57,7 @@ router.post('/removeFromFavorite', auth, async (req, res) => {
   });
 });
 
-router.post('/getFavoredProduct', auth, async (req, res) => {
+router.post('/getFavoredProduct', async (req, res) => {
   //Need to find all of the Users that I am subscribing to From Subscriber Collection
   await Favorite.find({ userFrom: req.body.userFrom }).exec(
     (err, favorites) => {

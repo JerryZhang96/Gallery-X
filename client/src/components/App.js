@@ -36,7 +36,7 @@ function App() {
             path='/product/:productId'
             component={Auth(DetailProductPage, null)}
           />
-          <Route exact path='/favorite' component={Auth(FavoritePage, true)} />
+          <Route exact path='/favorite' component={Auth(FavoritePage, null)} />
         </Switch>
       </div>
       <Footer />
