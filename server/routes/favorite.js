@@ -7,18 +7,20 @@ const { auth } = require('../middleware/auth');
 //             Favorite
 //=================================
 
-router.post('/favoriteNumber', auth, (req, res) => {
+router.post('/favoriteNumber', auth, async (req, res) => {
   //Find Favorite information inside Favorite Collection by Product ID
 
-  Favorite.find({ productId: req.body.productId }).exec((err, favorite) => {
-    if (err) return res.status(400).send(err);
-    res.status(200).json({ success: true, favoriteNumber: favorite.length });
-  });
+  await Favorite.find({ productId: req.body.productId }).exec(
+    (err, favorite) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).json({ success: true, favoriteNumber: favorite.length });
+    }
+  );
 });
 
-router.post('/favorited', auth, (req, res) => {
+router.post('/favorited', auth, async (req, res) => {
   // Find Favorite Information inside Favorite Collection by product Id , userFrom
-  Favorite.find({
+  await Favorite.find({
     productId: req.body.productId,
     userFrom: req.body.userFrom,
   }).exec((err, favorite) => {
@@ -34,19 +36,19 @@ router.post('/favorited', auth, (req, res) => {
   });
 });
 
-router.post('/addToFavorite', auth, (req, res) => {
+router.post('/addToFavorite', auth, async (req, res) => {
   console.log(req.body);
 
   const favorite = new Favorite(req.body);
 
-  favorite.save((err, doc) => {
+  await favorite.save((err, doc) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({ success: true, doc });
   });
 });
 
-router.post('/removeFromFavorite', auth, (req, res) => {
-  Favorite.findOneAndDelete({
+router.post('/removeFromFavorite', auth, async (req, res) => {
+  await Favorite.findOneAndDelete({
     productId: req.body.productId,
     userFrom: req.body.userFrom,
   }).exec((err, doc) => {
@@ -55,12 +57,14 @@ router.post('/removeFromFavorite', auth, (req, res) => {
   });
 });
 
-router.post('/getFavoredProduct', auth, (req, res) => {
+router.post('/getFavoredProduct', auth, async (req, res) => {
   //Need to find all of the Users that I am subscribing to From Subscriber Collection
-  Favorite.find({ userFrom: req.body.userFrom }).exec((err, favorites) => {
-    if (err) return res.status(400).send(err);
-    return res.status(200).json({ success: true, favorites });
-  });
+  await Favorite.find({ userFrom: req.body.userFrom }).exec(
+    (err, favorites) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).json({ success: true, favorites });
+    }
+  );
 });
 
 module.exports = router;

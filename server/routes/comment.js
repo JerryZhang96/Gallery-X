@@ -8,10 +8,10 @@ const { auth } = require('../middleware/auth');
 //             Comment
 //=================================
 
-router.post('/saveComment', (req, res) => {
+router.post('/saveComment', async (req, res) => {
   const comment = new Comment(req.body);
 
-  comment.save((err, comment) => {
+  await comment.save((err, comment) => {
     if (err) return res.json({ success: false, err });
 
     Comment.find({ _id: comment._id })
@@ -23,8 +23,8 @@ router.post('/saveComment', (req, res) => {
   });
 });
 
-router.post('/getComments', (req, res) => {
-  Comment.find({ postId: req.body.productId })
+router.post('/getComments', async (req, res) => {
+  await Comment.find({ postId: req.body.productId })
     .populate('writer')
     .exec((err, comments) => {
       if (err) return res.status(400).send(err);

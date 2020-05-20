@@ -106,16 +106,16 @@ router.post('/uploadImage', auth, (req, res) => {
   });
 });
 
-router.post('/uploadProduct', auth, (req, res) => {
+router.post('/uploadProduct', auth, async (req, res) => {
   const product = new Product(req.body);
 
-  product.save((err, product) => {
+  await product.save((err, product) => {
     if (err) return res.status(400).json({ success: false, err });
     return res.status(200).json({ success: true, product });
   });
 });
 
-router.post('/getProducts', (req, res) => {
+router.post('/getProducts', async (req, res) => {
   let order = req.body.order ? req.body.order : 'desc';
   let sortBy = req.body.sortBy ? req.body.sortBy : '_id';
   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
@@ -140,7 +140,7 @@ router.post('/getProducts', (req, res) => {
   // console.log(findArgs);
 
   if (term) {
-    Product.find(findArgs)
+    await Product.find(findArgs)
       .find({ $text: { $search: term } })
       .populate('writer')
       .sort([[sortBy, order]])
@@ -153,7 +153,7 @@ router.post('/getProducts', (req, res) => {
           .json({ success: true, products, postSize: products.length });
       });
   } else {
-    Product.find(findArgs)
+    await Product.find(findArgs)
       .populate('writer')
       .sort([[sortBy, order]])
       .skip(skip)
@@ -167,7 +167,7 @@ router.post('/getProducts', (req, res) => {
   }
 });
 
-router.get('/products_by_id', (req, res) => {
+router.get('/products_by_id', async (req, res) => {
   let type = req.query.type;
   let productIds = req.query.id;
 
@@ -184,7 +184,7 @@ router.get('/products_by_id', (req, res) => {
   console.log('productIds', productIds);
 
   //we need to find the product information that belong to product Id
-  Product.find({ _id: { $in: productIds } })
+  await Product.find({ _id: { $in: productIds } })
     .populate('writer')
     .exec((err, product) => {
       if (err) return res.status(400).send(err);

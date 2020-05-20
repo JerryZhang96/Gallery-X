@@ -8,7 +8,7 @@ const { auth } = require('../middleware/auth');
 //          Likes DisLikes
 //=================================
 
-router.post('/getLikes', (req, res) => {
+router.post('/getLikes', async (req, res) => {
   let variable = {};
   if (req.body.productId) {
     variable = { productId: req.body.productId };
@@ -16,13 +16,13 @@ router.post('/getLikes', (req, res) => {
     variable = { commentId: req.body.commentId };
   }
 
-  Like.find(variable).exec((err, likes) => {
+  await Like.find(variable).exec((err, likes) => {
     if (err) return res.status(400).send(err);
     res.status(200).json({ success: true, likes });
   });
 });
 
-router.post('/getDislikes', (req, res) => {
+router.post('/getDislikes', async (req, res) => {
   let variable = {};
   if (req.body.productId) {
     variable = { productId: req.body.productId };
@@ -30,13 +30,13 @@ router.post('/getDislikes', (req, res) => {
     variable = { commentId: req.body.commentId };
   }
 
-  Dislike.find(variable).exec((err, dislikes) => {
+  await Dislike.find(variable).exec((err, dislikes) => {
     if (err) return res.status(400).send(err);
     res.status(200).json({ success: true, dislikes });
   });
 });
 
-router.post('/upLike', (req, res) => {
+router.post('/upLike', async (req, res) => {
   let variable = {};
   if (req.body.productId) {
     variable = { productId: req.body.productId, userId: req.body.userId };
@@ -46,7 +46,7 @@ router.post('/upLike', (req, res) => {
 
   const like = new Like(variable);
   //save the like information data in MongoDB
-  like.save((err, likeResult) => {
+  await like.save((err, likeResult) => {
     if (err) return res.json({ success: false, err });
     //In case disLike Button is already clicked, we need to decrease the dislike by 1
     Dislike.findOneAndDelete(variable).exec((err, disLikeResult) => {
@@ -56,7 +56,7 @@ router.post('/upLike', (req, res) => {
   });
 });
 
-router.post('/unLike', (req, res) => {
+router.post('/unLike', async (req, res) => {
   let variable = {};
   if (req.body.productId) {
     variable = { productId: req.body.productId, userId: req.body.userId };
@@ -64,13 +64,13 @@ router.post('/unLike', (req, res) => {
     variable = { commentId: req.body.commentId, userId: req.body.userId };
   }
 
-  Like.findOneAndDelete(variable).exec((err, result) => {
+  await Like.findOneAndDelete(variable).exec((err, result) => {
     if (err) return res.status(400).json({ success: false, err });
     res.status(200).json({ success: true });
   });
 });
 
-router.post('/unDisLike', (req, res) => {
+router.post('/unDisLike', async (req, res) => {
   let variable = {};
   if (req.body.productId) {
     variable = { productId: req.body.productId, userId: req.body.userId };
@@ -78,13 +78,13 @@ router.post('/unDisLike', (req, res) => {
     variable = { commentId: req.body.commentId, userId: req.body.userId };
   }
 
-  Dislike.findOneAndDelete(variable).exec((err, result) => {
+  await Dislike.findOneAndDelete(variable).exec((err, result) => {
     if (err) return res.status(400).json({ success: false, err });
     res.status(200).json({ success: true });
   });
 });
 
-router.post('/upDisLike', (req, res) => {
+router.post('/upDisLike', async (req, res) => {
   let variable = {};
   if (req.body.productId) {
     variable = { productId: req.body.productId, userId: req.body.userId };
@@ -94,7 +94,7 @@ router.post('/upDisLike', (req, res) => {
 
   const disLike = new Dislike(variable);
   //save the like information data in MongoDB
-  disLike.save((err, dislikeResult) => {
+  await disLike.save((err, dislikeResult) => {
     if (err) return res.json({ success: false, err });
     //In case Like Button is already clicked, we need to decrease the like by 1
     Like.findOneAndDelete(variable).exec((err, likeResult) => {
