@@ -58,7 +58,7 @@ function FavoritePage() {
               height: '240px',
               overflowX: 'auto',
             }}
-            src={`https://gallery-x.herokuapp.com/${favorite.productImage[0]}`}
+            src={`https://pern-stack-blog-files.s3.amazonaws.com/${favorite.productImage[0]}`}
           />
         ) : (
           'no image'

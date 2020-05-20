@@ -1,42 +1,108 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require('../models/User');
-const { Product } = require('../models/Product');
+const aws = require('aws-sdk');
+const multerS3 = require('multer-s3');
 const multer = require('multer');
+const path = require('path');
+const config = require('../config/key');
+const { Product } = require('../models/Product');
 const { auth } = require('../middleware/auth');
 
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  },
-  fileFilter: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    if (ext !== '.jpg' || ext !== '.png') {
-      return cb(res.status(400).end('only jpg, png are allowed'), false);
-    }
-    cb(null, true);
-  },
-});
+// var storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads/');
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}_${file.originalname}`);
+//   },
+//   fileFilter: (req, file, cb) => {
+//     const ext = path.extname(file.originalname);
+//     if (ext !== '.jpg' || ext !== '.png') {
+//       return cb(res.status(400).end('only jpg, png are allowed'), false);
+//     }
+//     cb(null, true);
+//   },
+// });
 
-var upload = multer({ storage: storage }).single('file');
+// var upload = multer({ storage: storage }).single('file');
 
 //=================================
 //             Product
 //=================================
 
+// router.post('/uploadImage', auth, (req, res) => {
+//   upload(req, res, (err) => {
+//     if (err) {
+//       return res.json({ success: false, err });
+//     }
+//     return res.json({
+//       success: true,
+//       image: res.req.file.path,
+//       fileName: res.req.file.filename,
+//     });
+//   });
+// });
+
+// PROFILE IMAGE STORING STARTS
+const s3 = new aws.S3({
+  accessKeyId: config.AWS_ACCESS_KEY_ID,
+  secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  Bucket: config.AWS_STORAGE_BUCKET_NAME,
+});
+
+// Single Upload
+const uploadImage = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: config.AWS_STORAGE_BUCKET_NAME,
+    acl: 'public-read',
+    key: function (req, file, cb) {
+      cb(
+        null,
+        path.basename(file.originalname, path.extname(file.originalname)) +
+          '-' +
+          Date.now() +
+          path.extname(file.originalname)
+      );
+    },
+  }),
+  limits: { fileSize: 2000000 }, // In bytes: 2000000 bytes = 2 MB
+  fileFilter: function (req, file, cb) {
+    checkFileType(file, cb);
+  },
+}).single('file');
+
+// Check File Type
+function checkFileType(file, cb) {
+  // Allowed ext
+  const filetypes = /jpeg|jpg|png|gif/;
+  // Check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  // Check mime
+  const mimetype = filetypes.test(file.mimetype);
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb({ msg: 'Images Only' });
+  }
+}
+
+// Upload post image
 router.post('/uploadImage', auth, (req, res) => {
-  upload(req, res, (err) => {
+  uploadImage(req, res, (err) => {
     if (err) {
       return res.json({ success: false, err });
+    } else {
+      // If Success
+      const imageName = req.file.key;
+      const imageLocation = req.file.location;
+      // Save the file name into database into profile model
+      res.json({
+        success: true,
+        image: imageName,
+        location: imageLocation,
+      });
     }
-    return res.json({
-      success: true,
-      image: res.req.file.path,
-      fileName: res.req.file.filename,
-    });
   });
 });
 

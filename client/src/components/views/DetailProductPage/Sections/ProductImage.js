@@ -13,8 +13,8 @@ function ProductImage(props) {
       props.detail.images &&
         props.detail.images.map((item) => {
           images.push({
-            original: `https://gallery-x.herokuapp.com/${item}`,
-            thumbnail: `https://gallery-x.herokuapp.com/${item}`,
+            original: `https://pern-stack-blog-files.s3.amazonaws.com/${item}`,
+            thumbnail: `https://pern-stack-blog-files.s3.amazonaws.com/${item}`,
           });
         });
       setImages(images);

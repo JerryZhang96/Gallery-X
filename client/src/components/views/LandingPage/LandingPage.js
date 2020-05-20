@@ -61,7 +61,8 @@ function LandingPage() {
 
   const renderCards = Products.map((product, index) => {
     return (
-      <Col lg={6} md={12} xs={24} key={index}>
+      // <Col lg={6} md={8} xs={24} key={index}>
+      <Col xs={12} sm={16} md={24} lg={32} key={index}>
         <Card
           hoverable={true}
           cover={
