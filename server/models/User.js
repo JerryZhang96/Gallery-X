@@ -4,44 +4,51 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 
-const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    maxlength: 50,
+const userSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      maxlength: 50,
+    },
+    email: {
+      type: String,
+      trim: true,
+      unique: 1,
+    },
+    password: {
+      type: String,
+      minlength: 5,
+    },
+    // lastname: {
+    //   type: String,
+    //   maxlength: 50,
+    // },
+    role: {
+      type: Number,
+      default: 0,
+    },
+    cart: {
+      type: Array,
+      default: [],
+    },
+    history: {
+      type: Array,
+      default: [],
+    },
+    image: String,
+    token: {
+      type: String,
+    },
+    tokenExp: {
+      type: Number,
+    },
+    resetPasswordLink: {
+      data: String,
+      default: '',
+    },
   },
-  email: {
-    type: String,
-    trim: true,
-    unique: 1,
-  },
-  password: {
-    type: String,
-    minlength: 5,
-  },
-  // lastname: {
-  //   type: String,
-  //   maxlength: 50,
-  // },
-  role: {
-    type: Number,
-    default: 0,
-  },
-  cart: {
-    type: Array,
-    default: [],
-  },
-  history: {
-    type: Array,
-    default: [],
-  },
-  image: String,
-  token: {
-    type: String,
-  },
-  tokenExp: {
-    type: Number,
-  },
-});
+  { timestamps: true }
+);
 
 userSchema.pre('save', function (next) {
   var user = this;

@@ -1,6 +1,10 @@
 module.exports = {
+  CLIENT_URL: process.env.CLIENT_URL,
   mongoURI: process.env.MONGO_URI,
   AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
   AWS_STORAGE_BUCKET_NAME: process.env.AWS_STORAGE_BUCKET_NAME,
+  EMAIL_FROM: process.env.EMAIL_FROM,
+  SEND_GRID_MAIL_KEY: process.env.SEND_GRID_MAIL_KEY,
+  JWT_RESET_PASSWORD: process.env.JWT_RESET_PASSWORD,
 };

@@ -4,6 +4,8 @@ import {
   REGISTER_USER,
   AUTH_USER,
   LOGOUT_USER,
+  FORGET_USER,
+  RESET_USER,
   // ADD_TO_CART_USER,
 } from './types';
 import { USER_SERVER } from '../components/Config.js';
@@ -26,6 +28,28 @@ export function loginUser(dataToSubmit) {
 
   return {
     type: LOGIN_USER,
+    payload: request,
+  };
+}
+
+export function forgetUser(dataToSubmit) {
+  const request = axios
+    .put(`${USER_SERVER}/forgot-password`, dataToSubmit)
+    .then((response) => response.data);
+
+  return {
+    type: FORGET_USER,
+    payload: request,
+  };
+}
+
+export function resetUser(dataToSubmit) {
+  const request = axios
+    .put(`${USER_SERVER}/reset-password`, dataToSubmit)
+    .then((response) => response.data);
+
+  return {
+    type: RESET_USER,
     payload: request,
   };
 }

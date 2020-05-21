@@ -6,6 +6,8 @@ import LandingPage from './views/LandingPage/LandingPage.js';
 import InfoPage from './views/InfoPage/InfoPage.js';
 import LoginPage from './views/LoginPage/LoginPage.js';
 import RegisterPage from './views/RegisterPage/RegisterPage.js';
+import ForgetPage from './views/ForgetPage/ForgetPage.js';
+import ResetPage from './views/ResetPage/ResetPage.js';
 import NavBar from './views/NavBar/NavBar';
 import Footer from './views/Footer/Footer';
 import UploadProductPage from './views/UploadProductPage/UploadProductPage';
@@ -26,6 +28,17 @@ function App() {
           <Route exact path='/info' component={Auth(InfoPage, null)} />
           <Route exact path='/login' component={Auth(LoginPage, false)} />
           <Route exact path='/register' component={Auth(RegisterPage, false)} />
+          <Route
+            exact
+            path='/users/password/forget'
+            component={Auth(ForgetPage, false)}
+          />
+          <Route
+            exact
+            path='/users/password/reset/:token'
+            component={Auth(ResetPage, false)}
+          />
+
           <Route
             exact
             path='/product/upload'
