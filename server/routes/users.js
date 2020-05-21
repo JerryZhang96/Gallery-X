@@ -136,7 +136,7 @@ router.put('/forgot-password', async (req, res) => {
 });
 
 // Reset password route
-router.put('/reset-password', async (req, res) => {
+router.put('/reset-password', (req, res) => {
   const { resetPasswordLink, newPassword } = req.body;
   if (resetPasswordLink) {
     jwt.verify(resetPasswordLink, config.JWT_RESET_PASSWORD, function (
@@ -145,14 +145,16 @@ router.put('/reset-password', async (req, res) => {
     ) {
       if (err) {
         return res.status(400).json({
-          message: 'Expired link. Try again',
+          success: false,
+          message: 'Incorrect token or expired link. Try again',
         });
       }
 
       User.findOne({ resetPasswordLink }, (err, user) => {
         if (err || !user) {
           return res.status(400).json({
-            message: 'Something went wrong. Try later',
+            success: false,
+            message: 'User with this token does not exist. Try again',
           });
         }
 
@@ -166,6 +168,7 @@ router.put('/reset-password', async (req, res) => {
         user.save((err, result) => {
           if (err) {
             return res.status(400).json({
+              success: false,
               message: 'Error resetting user password',
             });
           }

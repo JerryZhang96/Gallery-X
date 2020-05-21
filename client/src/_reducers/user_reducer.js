@@ -3,6 +3,8 @@ import {
   REGISTER_USER,
   AUTH_USER,
   LOGOUT_USER,
+  FORGET_USER,
+  RESET_USER,
   // ADD_TO_CART_USER,
 } from '../_actions/types';
 
@@ -15,6 +17,10 @@ export default function (state = {}, action) {
     case AUTH_USER:
       return { ...state, userData: action.payload };
     case LOGOUT_USER:
+      return { ...state };
+    case FORGET_USER:
+      return { ...state };
+    case RESET_USER:
       return { ...state };
     // case ADD_TO_CART_USER:
     //   return {

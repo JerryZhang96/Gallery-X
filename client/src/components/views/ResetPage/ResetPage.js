@@ -60,14 +60,17 @@ function ResetPage(props) {
             resetPasswordLink: values.token,
           };
 
-          dispatch(resetUser(dataToSubmit)).then((response) => {
-            if (response.payload.success) {
-              props.history.push('/login');
-              message.success(response.payload.message);
-            } else if (response.payload) {
-              message.error(response.payload.message);
-            }
-          });
+          dispatch(resetUser(dataToSubmit))
+            .then((response) => {
+              if (response.payload.success === true) {
+                props.history.push('/login');
+                message.success(response.payload.message);
+              }
+            })
+            .catch((err) => {
+              props.history.push('/users/password/forget');
+              message.error(err.response.data.message);
+            });
 
           setSubmitting(false);
         }, 500);
